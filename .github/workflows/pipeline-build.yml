@@ -56,18 +56,13 @@ jobs:
     
     - name: Create EF Core migrations bundle - new tool-manifest
       if: ${{ inputs.build-artifacts == true }}
-      run: dotnet new tool-manifest
-        dotnet tool install --global dotnet-ef --version 8.0.0-rc.2.23480.1
-        dotnet ef migrations bundle --configuration Release -p ./src/Infrastructure/ -s ./src/Web/ -o efbundle.exe
-        zip -r ./efbundle.zip efbundle.exe
+      run: dotnet new tool-manifest        
       env:
         SkipNSwag: True
 
     - name: Create EF Core migrations bundle - install dotnet-ef
       if: ${{ inputs.build-artifacts == true }}
-      run: dotnet tool install --global dotnet-ef --version 8.0.0-rc.2.23480.1
-        dotnet ef migrations bundle --configuration Release -p ./src/Infrastructure/ -s ./src/Web/ -o efbundle.exe
-        zip -r ./efbundle.zip efbundle.exe
+      run: dotnet tool install --global dotnet-ef --version 8.0.0-rc.2.23480.1        
       env:
         SkipNSwag: True
 
