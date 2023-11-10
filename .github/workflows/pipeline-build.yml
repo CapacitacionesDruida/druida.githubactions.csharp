@@ -26,8 +26,15 @@ jobs:
           ${{ runner.os }}-nuget-
 
 
-    - name: Install .NET
+    - name: Install .NET Genral
       uses: actions/setup-dotnet@v3
+    
+    - name: Install last .Net 8 Previews
+      run: |
+          mkdir $HOME/dotnet_install && cd $HOME/dotnet_install
+          curl -L https://aka.ms/install-dotnet-preview -o install-dotnet-preview.sh
+          sudo bash install-dotnet-preview.sh
+          dotnet --list-sdks
 
     - name: Restore solution
       run: dotnet restore
@@ -52,16 +59,7 @@ jobs:
       with:
         name: website
         path: ./src/Web/publish/publish.zip
-        if-no-files-found: error
-
-    - name: Install last .Net 8
-      run: |
-          curl -Lo dotnet.tar.gz https://download.visualstudio.microsoft.com/download/pr/1975ec3e-0be7-460a-af09-2765318cab53/a07859c84a3e8990ccc77fb7efa53b28/dotnet-sdk-8.0.100-rc.2.23479.6-linux-x64.tar.gz
-          mkdir dotnet
-          tar -C dotnet -xf dotnet.tar.gz
-          rm dotnet.tar.gz
-          export DOTNET_ROOT=~/dotnet
-          export PATH=$PATH:~/dotnet
+        if-no-files-found: error    
     
     - name: Create EF Core migrations bundle - new tool-manifest
       if: ${{ inputs.build-artifacts == true }}
