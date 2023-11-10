@@ -26,15 +26,18 @@ jobs:
           ${{ runner.os }}-nuget-
 
 
-    - name: Install .NET Genral
+    - name: Install .NET General
       uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.0.0-rc.2.23479.6'
     
-    - name: Install last .Net 8 Previews
-      run: |
-          mkdir $HOME/dotnet_install && cd $HOME/dotnet_install
-          curl -L https://aka.ms/install-dotnet-preview -o install-dotnet-preview.sh
-          sudo bash install-dotnet-preview.sh
-          dotnet --list-sdks
+    # - name: Install last .Net 8 otnet-sdk-8.0.100-rc.2.23502.2
+    #   run: |
+    #       curl -Lo dotnet.tar.gz https://download.visualstudio.microsoft.com/download/pr/9144f37e-b370-41ee-a86f-2d2a69251652/bc1d544112ec134184a5aec7f7a1eaf9/dotnet-sdk-8.0.100-rc.2.23502.2-linux-x64.tar.gz
+    #       mkdir -p $HOME/dotnet && tar zxf dotnet-sdk-8.0.100-rc.2.23502.2-linux-x64.tar.gz -C $HOME/dotnet          
+    #       export DOTNET_ROOT=$HOME/dotnet
+    #       export PATH=$PATH:$HOME/dotnet
+    #       dotnet --list-sdks
 
     - name: Restore solution
       run: dotnet restore
