@@ -1,0 +1,41 @@
+name: CICD
+
+on: 
+  push:
+    branches:
+      - "**"
+  pull_request:
+    branches: ["master", "development"]
+  create:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+
+  CI:
+    uses: ./.github/workflows/pipeline-build.yml
+    with:
+      build-artifacts: true
+
+  CD-development:
+    uses: ./.github/workflows/pipeline-deploy-appservice.yml
+    secrets: inherit
+    needs: [ CI ]
+    with:
+      environmentName: Dev
+
+  CD-staging:
+    uses: ./.github/workflows/pipeline-deploy-appservice.yml
+    secrets: inherit
+    needs: [ CI ]
+    with:
+      environmentName: QA
+
+  CD-production:
+    uses: ./.github/workflows/pipeline-deploy-appservice.yml
+    secrets: inherit
+    needs: [ CI ]
+    with:
+      environmentName: Prpd
