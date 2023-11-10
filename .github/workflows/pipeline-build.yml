@@ -54,13 +54,33 @@ jobs:
         path: ./src/Web/publish/publish.zip
         if-no-files-found: error
     
-    - name: Create EF Core migrations bundle
+    - name: Create EF Core migrations bundle - new tool-manifest
       if: ${{ inputs.build-artifacts == true }}
-      run: |
-        dotnet new tool-manifest
+      run: dotnet new tool-manifest
         dotnet tool install --global dotnet-ef --version 8.0.0-rc.2.23480.1
         dotnet ef migrations bundle --configuration Release -p ./src/Infrastructure/ -s ./src/Web/ -o efbundle.exe
         zip -r ./efbundle.zip efbundle.exe
+      env:
+        SkipNSwag: True
+
+    - name: Create EF Core migrations bundle - install dotnet-ef
+      if: ${{ inputs.build-artifacts == true }}
+      run: dotnet tool install --global dotnet-ef --version 8.0.0-rc.2.23480.1
+        dotnet ef migrations bundle --configuration Release -p ./src/Infrastructure/ -s ./src/Web/ -o efbundle.exe
+        zip -r ./efbundle.zip efbundle.exe
+      env:
+        SkipNSwag: True
+
+    - name: Create EF Core migrations bundle - create migrations
+      if: ${{ inputs.build-artifacts == true }}
+      run: dotnet ef migrations bundle --configuration Release -p ./src/Infrastructure/ -s ./src/Web/ -o efbundle.exe
+        zip -r ./efbundle.zip efbundle.exe
+      env:
+        SkipNSwag: True
+
+    - name: Create EF Core migrations bundle - zip migrations
+      if: ${{ inputs.build-artifacts == true }}
+      run: zip -r ./efbundle.zip efbundle.exe
       env:
         SkipNSwag: True
 
