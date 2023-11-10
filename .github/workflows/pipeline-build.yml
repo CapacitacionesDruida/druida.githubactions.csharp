@@ -56,7 +56,7 @@ jobs:
     
     - name: Create EF Core migrations bundle - new tool-manifest
       if: ${{ inputs.build-artifacts == true }}
-      run: dotnet new tool-manifest        
+      run: dotnet new tool-manifest --force
       env:
         SkipNSwag: True
 
