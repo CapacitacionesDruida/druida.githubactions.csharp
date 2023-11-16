@@ -20,13 +20,15 @@ jobs:
       build-artifacts: true
 
   CD-development:
+    if: github.ref == 'refs/heads/development'  
     uses: ./.github/workflows/pipeline-deploy-appservice.yml
     secrets: inherit
     needs: [ CI ]
     with:
       environmentName: Dev
 
-  CD-staging:
+  CD-QA:
+    if: contains( github.ref, 'certification' )  
     uses: ./.github/workflows/pipeline-deploy-appservice.yml
     secrets: inherit
     needs: [ CI ]
@@ -34,6 +36,7 @@ jobs:
       environmentName: QA
 
   CD-production:
+    if: github.ref == 'refs/heads/master'  
     uses: ./.github/workflows/pipeline-deploy-appservice.yml
     secrets: inherit
     needs: [ CI ]
